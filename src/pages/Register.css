@@ -24,8 +24,7 @@ form {
   padding: 10px;
 }
 
-input {
-  /* margin: 5px 20px; */
+form > input {
   border: none;
   border-bottom: 1px solid #a7bcff;
   outline: none;

@@ -15,10 +15,6 @@
   overflow: hidden;
 }
 
-.sidebar {
-  flex: 1;
-}
-
 .chat {
   flex: 2;
 }
