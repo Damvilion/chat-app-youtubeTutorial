@@ -1,34 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Register.css";
 import add from "../images/addAvatar.png";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase-config";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth, db, storage } from "../firebase-config";
+import {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  uploadBytes,
+} from "firebase/storage";
+import { doc, setDoc } from "firebase/firestore";
 
 const Register = () => {
-  const handleSubmit = (e) => {
+  const [err, setErr] = useState(false);
+  const [errMes, setErrMes] = useState("");
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e.target[0].value);
     const displayName = e.target[0].value;
     const email = e.target[1].value;
     const password = e.target[2].value;
     const file = e.target[3].files[0];
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
+    try {
+      const res = await createUserWithEmailAndPassword(auth, email, password);
+      const storageRef = ref(storage, displayName);
 
-        console.log(user);
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage);
-        console.log(errorCode);
-        // ..
+      const uploadTask = uploadBytes(storageRef, file);
+
+      uploadTask.then((snapshot) => {
+        getDownloadURL(snapshot.ref).then(async (downloadURL) => {
+          await updateProfile(res.user, {
+            displayName: displayName,
+            photoURL: downloadURL,
+          });
+
+          console.log(downloadURL);
+
+          await setDoc(doc(db, "users", res.user.uid), {
+            uid: res.user.uid,
+            displayName: displayName,
+            email: email,
+            photoURL: downloadURL,
+          });
+        });
       });
+    } catch (err) {
+      setErr(true);
+      setErrMes(err.message);
+    }
   };
+
   return (
     <div className="form-container">
       <div className="form-wrapper">
@@ -44,6 +65,7 @@ const Register = () => {
           </label>
           <input style={{ display: "none" }} type="file" id="file" />
           <button>Sign up</button>
+          {err ? <p>{errMes}</p> : <p></p>}
         </form>
         <p>You do have an account? Login</p>
       </div>
