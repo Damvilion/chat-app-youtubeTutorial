@@ -10,10 +10,14 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [err, setErr] = useState(false);
   const [errMes, setErrMes] = useState("");
+
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const displayName = e.target[0].value;
@@ -42,6 +46,10 @@ const Register = () => {
             email: email,
             photoURL: downloadURL,
           });
+
+          await setDoc(doc(db, "userChats", res.user.uid), {});
+
+          navigate("/");
         });
       });
     } catch (err) {
@@ -65,9 +73,9 @@ const Register = () => {
           </label>
           <input style={{ display: "none" }} type="file" id="file" />
           <button>Sign up</button>
-          {err ? <p>{errMes}</p> : <p></p>}
+          {err && <p>{errMes}</p>}
         </form>
-        <p>You do have an account? Login</p>
+        <p>have an account? Login</p>
       </div>
     </div>
   );

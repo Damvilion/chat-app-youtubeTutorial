@@ -13,7 +13,7 @@ const Login = () => {
           <input style={{ display: "none" }} type="file" id="file" />
           <button>Sign in</button>
         </form>
-        <p>You do have an account? Login</p>
+        <p>You do have an account? Register</p>
       </div>
     </div>
   );
