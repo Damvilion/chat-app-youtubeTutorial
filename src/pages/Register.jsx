@@ -10,7 +10,7 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Register = () => {
   const [err, setErr] = useState(false);
@@ -49,7 +49,7 @@ const Register = () => {
 
           await setDoc(doc(db, "userChats", res.user.uid), {});
 
-          navigate("/");
+          navigate("/login");
         });
       });
     } catch (err) {
@@ -75,7 +75,9 @@ const Register = () => {
           <button>Sign up</button>
           {err && <p>{errMes}</p>}
         </form>
-        <p>have an account? Login</p>
+        <p>
+          have an account? <Link to="/login">Login</Link>
+        </p>
       </div>
     </div>
   );
