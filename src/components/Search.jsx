@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { collection, query, where, getDoc } from "firebase/firestore";
+import { collection, query, where, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../firebase-config";
 
 const Search = () => {
@@ -15,17 +15,14 @@ const Search = () => {
     );
 
     try {
-      const querySnapshot = await getDoc(q);
-
-      console.log(querySnapshot);
+      const querySnapshot = await getDocs(q);
 
       querySnapshot.forEach((doc) => {
-        setUser(doc.data);
-        console.log(user);
+        setUser(doc.data());
       });
     } catch (err) {
       setErr(true);
-      console.log(err.message);
+      console.log(err);
     }
   };
 
@@ -47,7 +44,7 @@ const Search = () => {
       {err && <span>User not found!</span>}
       {user && (
         <div className="userChat">
-          <img src={user.PhotoURL} alt="" />
+          <img src={user.photoURL} alt="" />
           <div className="userChatInfo">
             <span>{user.displayName}</span>
           </div>
