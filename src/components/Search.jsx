@@ -49,6 +49,7 @@ const Search = () => {
           onChange={(e) => {
             setUsername(e.target.value);
           }}
+          value={username}
         />
       </div>
       {err && <span style={{ color: "White" }}>User not found!</span>}
@@ -56,7 +57,12 @@ const Search = () => {
       {user && (
         <ul>
           {userListArr.map((user) => (
-            <UserList user={user} key={user.uid} />
+            <UserList
+              user={user}
+              key={user.uid}
+              setUser={setUser}
+              setUsername={setUsername}
+            />
           ))}
         </ul>
       )}
