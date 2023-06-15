@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import Message from "./Message";
+import { ChatContext } from "../context/ChatContext";
 
 const Messages = () => {
+  // const [messages, setMessages] = useState()
+  const { data } = useContext(ChatContext);
   return (
     <div className="messages">
       <Message />

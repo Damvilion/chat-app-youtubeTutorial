@@ -5,13 +5,15 @@ import More from "../images/more.png";
 import "./component-styles/Chat.css";
 import Messages from "./Messages";
 import Input from "./Input";
-import { AuthContext } from "../context/AuthContext";
+import { ChatContext } from "../context/ChatContext";
 
-const chat = () => {
+const Chat = () => {
+  const { data } = useContext(ChatContext);
+
   return (
     <div className="chat">
       <div className="chatInfo">
-        <span>Jane</span>
+        <span>{data.user?.displayName}</span>
         <div className="chatIcons">
           <img src={Cam} alt="" />
           <img src={Add} alt="" />
@@ -24,4 +26,4 @@ const chat = () => {
   );
 };
 
-export default chat;
+export default Chat;
