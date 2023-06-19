@@ -1,7 +1,8 @@
 .sidebar {
   flex: 1;
   background-color: #3e3c61;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: visible;
 }
 .navbar {
   display: flex;
