@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Img from "../images/img.png";
 import Attach from "../images/attach.png";
 import { AuthContext } from "../context/AuthContext";
@@ -71,11 +71,32 @@ const Input = () => {
     setText("");
     setImg(null);
   };
+
+  useEffect(() => {
+    if (text) {
+      input.current.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          handleSend();
+        }
+      });
+    }
+
+    return input.current.removeEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleSend();
+      }
+    });
+  });
+  const input = useRef();
+
   return (
     <div className="input">
       <input
         type="text"
         placeholder="Type Something"
+        ref={input}
         value={text}
         onChange={(e) => {
           setText(e.target.value);
@@ -83,6 +104,7 @@ const Input = () => {
       />
       <div className="send">
         <img src={Attach} alt="" />
+
         <input
           type="file"
           style={{ display: "none" }}
@@ -92,7 +114,9 @@ const Input = () => {
         <label htmlFor="file">
           <img src={Img} alt="" />
         </label>
-        <button onClick={handleSend}>Send</button>
+        <button type="submit" onClick={handleSend}>
+          Send
+        </button>
       </div>
     </div>
   );

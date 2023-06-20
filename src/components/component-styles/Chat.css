@@ -101,3 +101,8 @@
   color: white;
   border-radius: 10px 0px 10px 10px;
 }
+
+.inputForm {
+  display: flex;
+  margin-top: 0px;
+}
