@@ -71,33 +71,19 @@ const Input = () => {
     setText("");
     setImg(null);
   };
-
-  useEffect(() => {
-    if (text) {
-      input.current.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          handleSend();
-        }
-      });
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSend();
     }
-
-    return input.current.removeEventListener("keypress", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        handleSend();
-      }
-    });
-  });
-  const input = useRef();
+  };
 
   return (
     <div className="input">
       <input
         type="text"
         placeholder="Type Something"
-        ref={input}
         value={text}
+        onKeyDown={handleKeyDown}
         onChange={(e) => {
           setText(e.target.value);
         }}
